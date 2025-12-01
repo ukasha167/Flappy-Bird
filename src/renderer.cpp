@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include <string>
+#include <iostream>
 
 #include "renderer.h"
 #include "solver.h"
@@ -87,17 +88,17 @@ void Renderer::drawMenuScreen()
         DrawText("FLAPPY BIRD", 80, 150, 40, WHITE);
     }
 
-    char *prompt = "PRESS";
-    int promptWidth = MeasureText(prompt, 20);
-    DrawText(prompt, (SCREEN_WIDTH - promptWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 80, 20, WHITE);
+    std::string msg = "PRESS";
+    int msgWidth = MeasureText(msg.c_str(), 20);
+    DrawText(msg.c_str(), (SCREEN_WIDTH - msgWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 80, 20, WHITE);
 
-    prompt = "SPACE OR ARROW-UP";
-    promptWidth = MeasureText(prompt, 20);
-    DrawText(prompt, (SCREEN_WIDTH - promptWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 100, 20, WHITE);
+    msg = "SPACE OR ARROW-UP";
+    msgWidth = MeasureText(msg.c_str(), 20);
+    DrawText(msg.c_str(), (SCREEN_WIDTH - msgWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 100, 20, WHITE);
 
-    prompt = "TO START";
-    promptWidth = MeasureText(prompt, 20);
-    DrawText(prompt, (SCREEN_WIDTH - promptWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 120, 20, WHITE);
+    msg = "TO START";
+    msgWidth = MeasureText(msg.c_str(), 20);
+    DrawText(msg.c_str(), (SCREEN_WIDTH - msgWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 120, 20, WHITE);
 }
 
 void Renderer::drawGameOverScreen(const int &score)
@@ -116,17 +117,17 @@ void Renderer::drawGameOverScreen(const int &score)
     int scoreWidth = MeasureText(TextFormat("Score : %02i", score), 40);
     DrawText(TextFormat("Score : %02i", score), (SCREEN_WIDTH - scoreWidth) >> 1, SCREEN_HEIGHT >> 1, 40, {255, 216, 0, 255});
 
-    char *prompt = "PRESS";
-    int promptWidth = MeasureText(prompt, 20);
-    DrawText(prompt, (SCREEN_WIDTH - promptWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 80, 20, WHITE);
+    std::string msg = "PRESS";
+    int msgWidth = MeasureText(msg.c_str(), 20);
+    DrawText(msg.c_str(), (SCREEN_WIDTH - msgWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 80, 20, WHITE);
 
-    prompt = "SPACE OR ARROW-UP";
-    promptWidth = MeasureText(prompt, 20);
-    DrawText(prompt, (SCREEN_WIDTH - promptWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 100, 20, WHITE);
+    msg = "SPACE OR ARROW-UP";
+    msgWidth = MeasureText(msg.c_str(), 20);
+    DrawText(msg.c_str(), (SCREEN_WIDTH - msgWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 100, 20, WHITE);
 
-    prompt = "TO RESTART";
-    promptWidth = MeasureText(prompt, 20);
-    DrawText(prompt, (SCREEN_WIDTH - promptWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 120, 20, WHITE);
+    msg = "TO RESTART";
+    msgWidth = MeasureText(msg.c_str(), 20);
+    DrawText(msg.c_str(), (SCREEN_WIDTH - msgWidth) >> 1, (SCREEN_HEIGHT * 0.75) + 120, 20, WHITE);
 }
 
 void Renderer::drawScene(const int &state, const int &score, const Bird &bird, const Background (&background)[2], const Pipe (&topPipes)[PIPES_COUNT], const Pipe (&bottomPipes)[PIPES_COUNT])
@@ -143,7 +144,7 @@ void Renderer::drawScene(const int &state, const int &score, const Bird &bird, c
     }
     else
     {
-        DrawTexturePro(bird.img, {0.0f, 0.0f, (float)bird.img.width, (float)bird.img.height}, {SCREEN_WIDTH / 5, bird.positionY, (float)bird.img.width, (float)bird.img.height}, {0.0f, 0.0f}, bird.curr_rotation, WHITE);
+        DrawTexturePro(bird.img, {0.0f, 0.0f, (float)bird.img.width, (float)bird.img.height}, {SCREEN_WIDTH * 0.2, bird.positionY, (float)bird.img.width, (float)bird.img.height}, {0.0f, 0.0f}, bird.curr_rotation, WHITE);
     }
 
     for (unsigned char i = 0; i < PIPES_COUNT; i++)
@@ -167,7 +168,7 @@ void Renderer::drawScene(const int &state, const int &score, const Bird &bird, c
     }
 
     /*  DEBUG: Display Hitboxs
-        DrawRectangleLinesEx({SCREEN_WIDTH / 5, bird.positionY, (float)bird.img.width, (float)bird.img.height}, 2.0f, RED);
+        DrawRectangleLinesEx({SCREEN_WIDTH * 0.2, bird.positionY, (float)bird.img.width, (float)bird.img.height}, 2.0f, RED);
 
         for (unsigned char i = 0; i < PIPES_COUNT; i++)
         {
