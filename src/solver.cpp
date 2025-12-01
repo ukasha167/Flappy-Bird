@@ -12,7 +12,7 @@ Background Solver::background[2];
 void Solver::initGamePositions()
 {
     setPipesPositionX();
-    setPipesPositionY();
+    setPipesPositionY(nullptr);
 }
 
 void Solver::setPipesPositionX()
@@ -28,11 +28,19 @@ void Solver::setPipesPositionX()
     }
 }
 
-void Solver::setPipesPositionY()
+void Solver::setPipesPositionY(const int *const pipe)
 {
     constexpr int pipeStart = (SCREEN_HEIGHT >> 1) - 130;
     constexpr int pipeEnd = (SCREEN_HEIGHT >> 1) + 100;
     int randomNum;
+
+    if ((pipe != nullptr) && (*pipe >= 0 && *pipe < PIPES_COUNT))
+    {
+        randomNum = GetRandomValue(pipeStart, pipeEnd);
+        topPipes[*pipe].positionY = randomNum - topPipes[*pipe].height;
+        bottomPipes[*pipe].positionY = randomNum + PIPE_GAP;
+        return;
+    }
 
     for (unsigned char i = 0; i < PIPES_COUNT; i++)
     {
@@ -69,16 +77,6 @@ void Solver::updateScore()
     backGroundSpeed += 0.5f;
 }
 
-bool Solver::checkCollision()
-{
-    if (PipeCollision() || bird.positionY + bird.height > SCREEN_HEIGHT)
-    {
-        return true;
-    }
-
-    return false;
-}
-
 bool Solver::PipeCollision()
 {
     Pipe &topPipe = topPipes[Current_Pipe];
@@ -96,19 +94,33 @@ bool Solver::PipeCollision()
     return false;
 }
 
+bool Solver::checkCollision()
+{
+    if (PipeCollision() || bird.positionY + bird.height > SCREEN_HEIGHT)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 void Solver::recyclePipes()
 {
+    if (topPipes[First_Pipe].positionX + topPipes[First_Pipe].width > 0)
+    {
+        return;
+    }
+
     const int MIN_GAP_X = 200;
     const int MAX_GAP_X = 250;
     int randomGap;
 
-    if (topPipes[First_Pipe].positionX + topPipes[First_Pipe].width <= 0)
-    {
-        randomGap = GetRandomValue(MIN_GAP_X, MAX_GAP_X);
-        topPipes[First_Pipe].positionX = topPipes[(First_Pipe + PIPES_COUNT - 1) % PIPES_COUNT].positionX + randomGap;
-        bottomPipes[First_Pipe].positionX = bottomPipes[(First_Pipe + PIPES_COUNT - 1) % PIPES_COUNT].positionX + randomGap;
-        First_Pipe = (First_Pipe + 1) % PIPES_COUNT;
-    }
+    randomGap = GetRandomValue(MIN_GAP_X, MAX_GAP_X);
+    topPipes[First_Pipe].positionX = topPipes[(First_Pipe + PIPES_COUNT - 1) % PIPES_COUNT].positionX + randomGap;
+    bottomPipes[First_Pipe].positionX = bottomPipes[(First_Pipe + PIPES_COUNT - 1) % PIPES_COUNT].positionX + randomGap;
+
+    setPipesPositionY(&First_Pipe);
+    First_Pipe = (First_Pipe + 1) % PIPES_COUNT;
 }
 
 void Solver::reset()
