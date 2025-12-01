@@ -9,7 +9,7 @@ struct Bird
 {
     float width, height;
 
-    float positionX = SCREEN_WIDTH / 5;
+    float positionX = SCREEN_WIDTH * 0.2;
     float positionY = SCREEN_HEIGHT >> 1;
     float velocityY = 0.0f;
     float curr_rotation = 0.0f;
