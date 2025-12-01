@@ -35,7 +35,7 @@ private:
 
     static bool PipeCollision();
     static void setPipesPositionX();
-    static void setPipesPositionY();
+    static void setPipesPositionY(const int *const pipe);
 
 public:
     static Bird bird;
